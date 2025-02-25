@@ -47,7 +47,7 @@ export default function QueryProcessor(query: string): string {
     if (numberMatch) {
       const numbers = numberMatch.slice(1).map(Number);
       if (numbers[1] === 0) {
-        return "Cannot divide by zero";
+        return "";
       }
       const result = numbers[0] / numbers[1];
       return `${result}`;
