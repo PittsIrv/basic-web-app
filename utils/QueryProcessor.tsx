@@ -1,4 +1,5 @@
 export default function QueryProcessor(query: string): string {
+  const lowerQuery = query.toLowerCase();
   if (query.toLowerCase().includes("shakespeare")) {
     return (
       "William Shakespeare (26 April 1564 - 23 April 1616) was an " +
@@ -63,7 +64,6 @@ export default function QueryProcessor(query: string): string {
     }
   }
 
-  
 
   if (query.toLowerCase().includes("which of the following numbers is both a square and a cube")) {
     const numberMatch = query.match(/(\d+(?:,\s*\d+)*)/);
@@ -84,19 +84,16 @@ export default function QueryProcessor(query: string): string {
     }
     return "";
   }
-  const lowerQuery = query.toLowerCase();
 
   if (lowerQuery.includes("to the power of")) {
-    // Extract the base and exponent using a regular expression
     const numberMatch = query.match(/what is\s*(\d+)\s*to the power of\s*(\d+)/i);
     if (numberMatch) {
-      // Convert the captured numbers to integers
       const base = parseInt(numberMatch[1], 10);
       const exponent = parseInt(numberMatch[2], 10);
-      // Calculate the result
       const result = Math.pow(base, exponent);
-      // Return the result as a string
-      return `${result}`;
+
+      // Return the result, which may be an approximate floating-point number
+      return result.toString();
     }
   }
 
