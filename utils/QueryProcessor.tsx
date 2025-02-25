@@ -42,6 +42,18 @@ export default function QueryProcessor(query: string): string {
     }
   }
 
+  if (query.toLowerCase().includes("divided by")) {
+    const numberMatch = query.match(/what is\s*(\d+)\s*divided by\s*(\d+)/i);
+    if (numberMatch) {
+      const numbers = numberMatch.slice(1).map(Number);
+      if (numbers[1] === 0) {
+        return "Cannot divide by zero";
+      }
+      const result = numbers[0] / numbers[1];
+      return `${result}`;
+    }
+  }
+
   if (query.toLowerCase().includes("which of the following numbers is both a square and a cube")) {
     const numberMatch = query.match(/(\d+(?:,\s*\d+)*)/);
     if (numberMatch) {
@@ -57,7 +69,7 @@ export default function QueryProcessor(query: string): string {
         }
       }
     }
-    return "None of the numbers is both a square and a cube.";
+    return "";
   }
 
   return "";
