@@ -63,22 +63,62 @@ export default function QueryProcessor(query: string): string {
     }
   }
 
+  
+
   if (query.toLowerCase().includes("which of the following numbers is both a square and a cube")) {
     const numberMatch = query.match(/(\d+(?:,\s*\d+)*)/);
     if (numberMatch) {
       const numbers = numberMatch[0]
         .split(',')
-        .map(num => parseInt(num.trim(), 10))
-        .filter(num => !isNaN(num));
+        .map((num) => parseInt(num.trim(), 10))
+        .filter((num) => !isNaN(num));
 
       for (const num of numbers) {
         const sixthRoot = Math.pow(num, 1 / 6);
-        if (Number.isInteger(sixthRoot)) {
+        const candidate = Math.round(sixthRoot);
+        // Re-check to avoid floating-point errors
+        if (Math.pow(candidate, 6) === num) {
           return `${num}`;
         }
       }
     }
     return "";
+  }
+  const lowerQuery = query.toLowerCase();
+
+  if (lowerQuery.includes("to the power of")) {
+    // Extract the base and exponent using a regular expression
+    const numberMatch = query.match(/what is\s*(\d+)\s*to the power of\s*(\d+)/i);
+    if (numberMatch) {
+      // Convert the captured numbers to integers
+      const base = parseInt(numberMatch[1], 10);
+      const exponent = parseInt(numberMatch[2], 10);
+      // Calculate the result
+      const result = Math.pow(base, exponent);
+      // Return the result as a string
+      return `${result}`;
+    }
+  }
+  
+   if (lowerQuery.includes("what is") && lowerQuery.includes("plus")) {
+    // Remove the leading "what is" and the trailing question mark, if present
+    // Then split the remaining string by the word "plus"
+    const numbersStr = lowerQuery
+      .replace("what is", "")
+      .replace("?", "")
+      .trim();
+
+    // Split on "plus" and convert each chunk into an integer
+    const numbers = numbersStr
+      .split("plus")
+      .map((num) => parseInt(num.trim(), 10))
+      .filter((num) => !isNaN(num));
+
+    // Sum all the parsed numbers
+    const sum = numbers.reduce((acc, curr) => acc + curr, 0);
+
+    // Return the result as a string
+    return `${sum}`;
   }
 
   if (query.toLowerCase().includes("which of the following numbers are primes")) {
