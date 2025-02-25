@@ -99,27 +99,23 @@ export default function QueryProcessor(query: string): string {
       return `${result}`;
     }
   }
-  
-   if (lowerQuery.includes("what is") && lowerQuery.includes("plus")) {
-    // Remove the leading "what is" and the trailing question mark, if present
-    // Then split the remaining string by the word "plus"
-    const numbersStr = lowerQuery
-      .replace("what is", "")
-      .replace("?", "")
-      .trim();
 
-    // Split on "plus" and convert each chunk into an integer
-    const numbers = numbersStr
-      .split("plus")
-      .map((num) => parseInt(num.trim(), 10))
-      .filter((num) => !isNaN(num));
+  if (lowerQuery.includes("what is") && lowerQuery.includes("plus")) {
+      const numbersStr = lowerQuery
+        .replace("what is", "")
+        .replace("?", "")
+        .trim();
 
-    // Sum all the parsed numbers
-    const sum = numbers.reduce((acc, curr) => acc + curr, 0);
+      const numbers = numbersStr
+        .split("plus")
+        .map((num) => parseInt(num.trim(), 10))
+        .filter((num) => !isNaN(num));
 
-    // Return the result as a string
-    return `${sum}`;
-  }
+      const sum = numbers.reduce((acc, curr) => acc + curr, 0);
+
+      return `${sum}`;
+    }
+
 
   if (query.toLowerCase().includes("which of the following numbers are primes")) {
     // Match all numbers in the query, e.g. "40, 17, 21, 76, 93"
