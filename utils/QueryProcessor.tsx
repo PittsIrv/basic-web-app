@@ -33,6 +33,15 @@ export default function QueryProcessor(query: string): string {
     }
   }
 
+  if (query.toLowerCase().includes("minus")) {
+    const numberMatch = query.match(/what is\s*(\d+)\s*minus\s*(\d+)/i);
+    if (numberMatch) {
+      const [num1, num2] = numberMatch.slice(1).map(Number);
+      const difference = num1 - num2;
+      return `${difference}`;
+    }
+  }
+  
   if (query.toLowerCase().includes("multiplied by")) {
     const numberMatch = query.match(/what is\s*(\d+)\s*multiplied by\s*(\d+)/i);
     if (numberMatch) {
