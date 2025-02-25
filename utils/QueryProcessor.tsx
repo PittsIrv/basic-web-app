@@ -41,7 +41,7 @@ export default function QueryProcessor(query: string): string {
       return `${difference}`;
     }
   }
-  
+
   if (query.toLowerCase().includes("multiplied by")) {
     const numberMatch = query.match(/what is\s*(\d+)\s*multiplied by\s*(\d+)/i);
     if (numberMatch) {
@@ -79,6 +79,40 @@ export default function QueryProcessor(query: string): string {
       }
     }
     return "";
+  }
+
+  if (query.toLowerCase().includes("which of the following numbers are primes")) {
+    // Match all numbers in the query, e.g. "40, 17, 21, 76, 93"
+    const numberMatch = query.match(/(\d+(?:,\s*\d+)*)/);
+    if (numberMatch) {
+      // Split the matched string by commas, convert to integers
+      const numbers = numberMatch[0]
+        .split(',')
+        .map((num) => parseInt(num.trim(), 10))
+        .filter((num) => !isNaN(num));
+
+      // Function to check if a number is prime
+      const isPrime = (n: number): boolean => {
+        if (n < 2) return false;
+        // Simple trial division check
+        for (let i = 2; i <= Math.sqrt(n); i++) {
+          if (n % i === 0) {
+            return false;
+          }
+        }
+        return true;
+      };
+
+      // Filter primes from the extracted numbers
+      const primes = numbers.filter((num) => isPrime(num));
+
+      // Return the list of primes or a default message if none found
+      if (primes.length > 0) {
+        return primes.join(", ");
+      } else {
+        return "None of the numbers are prime.";
+      }
+    }
   }
 
   return "";
