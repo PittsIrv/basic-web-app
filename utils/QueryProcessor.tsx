@@ -7,12 +7,21 @@ export default function QueryProcessor(query: string): string {
     );
   }
 
-  if (query.toLowerCase().includes("name")) {
-    return "Rohan";
+  if (query.toLowerCase().includes("your name")) {
+    return "Mingxi Yan";
   }
 
   if (query.toLowerCase().includes("andrew id")) {
     return "mingxiy";
+  }
+
+  if (query.toLowerCase().includes("numbers is the largest")) {
+    const numberMatch = query.match(/(\d+),\s*(\d+),\s*(\d+)/);
+    if (numberMatch) {
+      const numbers = numberMatch.slice(1).map(Number);
+      const largestNumber = Math.max(...numbers);
+      return `${largestNumber}`;
+    }
   }
 
   return "";
