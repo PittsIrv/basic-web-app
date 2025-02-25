@@ -92,27 +92,24 @@ export default function QueryProcessor(query: string): string {
       const exponent = parseInt(numberMatch[2], 10);
       const result = Math.pow(base, exponent);
 
-      // Return the result, which may be an approximate floating-point number
       return result.toString();
     }
   }
 
   if (lowerQuery.includes("what is") && lowerQuery.includes("plus")) {
-      const numbersStr = lowerQuery
-        .replace("what is", "")
-        .replace("?", "")
-        .trim();
-
-      const numbers = numbersStr
-        .split("plus")
-        .map((num) => parseInt(num.trim(), 10))
-        .filter((num) => !isNaN(num));
-
+    // Extract all numbers from the query using a regular expression
+    const numberMatch = query.match(/(\d+)/g);
+  
+    if (numberMatch) {
+      // Convert the matched strings to integers
+      const numbers = numberMatch.map(num => parseInt(num, 10));
+  
+      // Sum all the numbers
       const sum = numbers.reduce((acc, curr) => acc + curr, 0);
-
+  
       return `${sum}`;
     }
-
+  }
 
   if (query.toLowerCase().includes("which of the following numbers are primes")) {
     // Match all numbers in the query, e.g. "40, 17, 21, 76, 93"
