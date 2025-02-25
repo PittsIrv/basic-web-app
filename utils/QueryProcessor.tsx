@@ -24,5 +24,14 @@ export default function QueryProcessor(query: string): string {
     }
   }
 
+  if (query.toLowerCase().includes("what is") && query.toLowerCase().includes("plus")) {
+    const numberMatch = query.match(/what is\s*(\d+)\s*plus\s*(\d+)/i);
+    if (numberMatch) {
+      const numbers = numberMatch.slice(1).map(Number);
+      const sum = numbers.reduce((acc, curr) => acc + curr, 0);
+      return `${sum}`;
+    }
+  }
+
   return "";
 }
