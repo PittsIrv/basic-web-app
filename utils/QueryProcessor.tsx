@@ -33,17 +33,16 @@ export default function QueryProcessor(query: string): string {
     }
   }
 
-  if (query.toLowerCase().includes("what is") && query.toLowerCase().includes("multiply")) {
-    const numberMatch = query.match(/what is\s*(\d+)\s*multiply\s*(\d+)/i);
+  if (query.toLowerCase().includes("multiplied by")) {
+    const numberMatch = query.match(/what is\s*(\d+)\s*multiplied by\s*(\d+)/i);
     if (numberMatch) {
       const numbers = numberMatch.slice(1).map(Number);
-      const product = numbers.reduce((acc, curr) => acc * curr, 1);
+      const product = numbers[0] * numbers[1];
       return `${product}`;
     }
   }
 
   if (query.toLowerCase().includes("which of the following numbers is both a square and a cube")) {
-    // Extract the numbers from the query
     const numberMatch = query.match(/(\d+(?:,\s*\d+)*)/);
     if (numberMatch) {
       const numbers = numberMatch[0]
@@ -52,14 +51,12 @@ export default function QueryProcessor(query: string): string {
         .filter(num => !isNaN(num));
 
       for (const num of numbers) {
-        // Check if num is a perfect sixth power
         const sixthRoot = Math.pow(num, 1 / 6);
         if (Number.isInteger(sixthRoot)) {
           return `${num}`;
         }
       }
     }
-    // If no sixth power is found, return a default message
     return "None of the numbers is both a square and a cube.";
   }
 
